@@ -57,7 +57,6 @@ async function sendRequest(url, method = 'GET', body = null) {
         body = JSON.stringify(body);
     }
 
-    console.log(config);
     config.body = body;
     const response = await fetch(url, config);
     const data = await response.json();
