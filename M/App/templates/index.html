@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <link href="{% static 'css/styles1.css' %}" rel="stylesheet" />
+    <title>M</title>
+</head>
+<body>
+
+<div class="modal-overlay" id="modalMenu">
+  <div class="modal-sidebar">
+    <div class="modal-header">
+      <div class="user-profile open-profile" data_username={{user.username}} data_owner="true">
+        <img src="{{ avatar_url }}" class="user-avatar-lg" alt="Аватар">
+        <div class="user-name">{{ user.username }}</div>
+      </div>
+      <span class="close-btn" id="closeBtn">&times;</span>
+    </div>
+    <div class="divider"></div>
+    <ul class="modal-options">
+      <li class="option-item open-profile" data_username={{user.username}} data_owner="true">Настройки Профиля</li>
+      <li class="option-item" id="open-chat-create">Создать группу</li>
+      <li class="option-item">
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="logout-btn">Выйти</button>
+        </form>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+    <div class="chat-container">
+        <!-- Левая колонка -->
+        <div class="chat-list">
+            <div class="header-row">
+                <button class="menu-button" id="menuButton">
+                    <span class="menu-icon"></span>
+                </button>
+                <div class="username-search">
+                    <input id="search-user-input" type="text" placeholder="Найти пользователя...">
+                    <div id="username-list" class="search-results"></div>
+                </div>
+            </div>
+
+            <div class="list-container">
+                <!-- Результаты поиска -->
+                <div id="search-results" class="search-results-container">
+                    <div class="search-results-list"></div>
+                </div>
+                <div class="chats-list" id="chat-list">
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая колонка -->
+        <div id="chat-window">
+            <div class="chat-header">
+                <h2 class="chat-title" id="chatTitle">Выберите чат</h2>
+                <div class="chat-members" id="chatMembers"></div>
+            </div>
+            <div id="chat-messages"></div>
+            <form id="message-form">
+                <input type="text" name="message" placeholder="Введите сообщение...">
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalOverlay" class="hidden">
+        <div class="modal">
+            <span class="close-btn-modal">&times;</span>
+            <form id="chatForm">
+                <h2>Новый групповой чат</h2>
+
+                <div class="form-group">
+                    <label>Название чата:</label>
+                    <input type="text" name="title" id="chatName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Добавить участников:</label>
+                    <input type="text" id="userSearch" placeholder="Поиск пользователей...">
+                    <div id="searchResults" class="users-list"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Выбранные участники:</label>
+                    <div id="selectedUsers" class="selected-users"></div>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn">Отмена</button>
+                    <button type="submit">Создать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<div class="profile-modal-overlay" id="profileModal">
+  <div class="profile-modal">
+    <div class="profile-header">
+      <img class="profile-avatar" id="profileAvatar" src="" alt="Аватар">
+      <h2 class="profile-username" id="profileUsername"></h2>
+      <p class="profile-description" id="profileDescription"></p>
+    </div>
+    <div class="divider"></div>
+
+    <!-- Для других пользователей -->
+    <div class="profile-actions" id="profileActions">
+      <button class="action-btn primary" id="writeMessageBtn">Написать сообщение</button>
+    </div>
+
+    <!-- Для владельца -->
+    <form class="profile-edit-form hidden" id="profileEditForm">
+      <div class="form-group">
+        <label>Изменить аватар:</label>
+        <input type="file" id="avatarInput" accept="image/*">
+      </div>
+
+      <div class="form-group">
+        <label>Описание:</label>
+        <textarea id="descriptionInput"></textarea>
+      </div>
+
+      <div class="form-buttons">
+        <button type="button" class="action-btn secondary" onclick="closeProfileModal()">Отмена</button>
+        <button type="submit" class="action-btn primary">Сохранить</button>
+      </div>
+    </form>
+
+    <span class="close-btn" id="close-button-profile">&times;</span>
+  </div>
+</div>
+<script> window.user = "{{ user.username|escapejs }}";</script>
+<script type="module" src="{% static 'js/app.js' %}"></script>
+</body>
+</html>
